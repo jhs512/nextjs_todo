@@ -13,6 +13,12 @@ export default function Home() {
       <Button variant="contained">버튼</Button>
 
       <div className="w-[100px] h-[100px] bg-red-500"></div>
+      <ul>
+        <li>하하</li>
+        <li>하하</li>
+        <li>하하</li>
+        <li>하하</li>
+      </ul>
     </>
   );
 }
