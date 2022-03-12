@@ -22,6 +22,8 @@ export default function Home() {
       </AppBar>
       <Toolbar />
       <div className="flex-1 flex flex-col p-10 gap-6">
+        <input type="date" />
+
         <TextField
           className="flex-1 flex flex-col"
           InputProps={{ className: " flex-1 flex flex-col" }}
