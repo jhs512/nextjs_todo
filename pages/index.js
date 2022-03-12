@@ -26,7 +26,7 @@ export default function Home() {
       </AppBar>
       <Toolbar />
       <div className="bg-[#f4f4f4] flex-1 flex justify-center items-center">
-        <div className="grid gap-[20px]">
+        <div className="grid gap-6">
           <div className="text-gray-500">할일을 추가해주세요!</div>
           <Button
             size="large"

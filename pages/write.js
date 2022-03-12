@@ -1,4 +1,4 @@
-import { AppBar, Button, Toolbar } from "@mui/material";
+import { AppBar, Button, TextField, Toolbar } from "@mui/material";
 import Head from "next/head";
 import Link from "../src/Link";
 
@@ -21,8 +21,20 @@ export default function Home() {
         </Toolbar>
       </AppBar>
       <Toolbar />
-      <div className="bg-[#f4f4f4] flex-1 flex justify-center items-center">
-        할일작성
+      <div className="flex-1 flex flex-col p-10 gap-6">
+        <TextField
+          className="flex-1 flex flex-col"
+          InputProps={{ className: " flex-1 flex flex-col" }}
+          inputProps={{ className: " flex-1" }}
+          label="할일"
+          placeholder="할일"
+          multiline
+        />
+        <Button variant="contained">
+          <span>할일추가</span>
+          <span>&nbsp;</span>
+          <i className="fa-solid fa-marker"></i>
+        </Button>
       </div>
     </>
   );
