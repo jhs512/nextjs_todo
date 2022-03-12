@@ -1,8 +1,12 @@
+import { MobileDatePicker } from "@mui/lab";
 import { AppBar, Button, TextField, Toolbar } from "@mui/material";
 import Head from "next/head";
+import { useState } from "react";
 import Link from "../src/Link";
 
 export default function Home() {
+  const [inputPerformDateValue, setInputPerformDateValue] = useState(null);
+
   return (
     <>
       <Head>
@@ -22,7 +26,17 @@ export default function Home() {
       </AppBar>
       <Toolbar />
       <div className="flex-1 flex flex-col p-10 gap-6">
-        <input type="date" />
+        <MobileDatePicker
+          value={inputPerformDateValue}
+          onChange={(newValue) => setInputPerformDateValue(newValue)}
+          label="언제 해야하나요?"
+          inputFormat={"yyyy-MM-DD"}
+          mask={"____-__-__"}
+          renderInput={(params) => <TextField {...params} />}
+          toolbarFormat="yyyy년 MM월"
+          okText="확인"
+          cancelText="취소"
+        />
 
         <TextField
           className="flex-1 flex flex-col"

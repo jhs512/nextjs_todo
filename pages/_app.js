@@ -1,4 +1,6 @@
 import { CacheProvider } from "@emotion/react";
+import DateAdapter from "@mui/lab/AdapterMoment";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import Head from "next/head";
@@ -49,7 +51,9 @@ export default function MyApp(props) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        <Component {...pageProps} />
+        <LocalizationProvider dateAdapter={DateAdapter}>
+          <Component {...pageProps} />
+        </LocalizationProvider>
       </ThemeProvider>
     </CacheProvider>
   );
