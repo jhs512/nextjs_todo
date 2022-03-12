@@ -1,11 +1,8 @@
 import { AppBar, Button, Toolbar } from "@mui/material";
 import Head from "next/head";
 import Link from "../src/Link";
-import { useTheme } from "@mui/material/styles";
 
 export default function Home() {
-  const theme = useTheme();
-
   return (
     <>
       <Head>
@@ -31,8 +28,10 @@ export default function Home() {
       <div className="bg-[#f4f4f4] flex-1 flex justify-center items-center">
         <div className="grid gap-6">
           <div className="text-gray-500">
-            <span style={{ color: theme.palette.primary.main }}>할일</span>을
-            추가해주세요!
+            <span className="text-[color:var(--mui-color-primary-main)]">
+              할일
+            </span>
+            을 추가해주세요!
           </div>
           <Button
             size="large"
