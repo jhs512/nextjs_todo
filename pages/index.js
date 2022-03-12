@@ -10,7 +10,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Button variant="outlined">버튼</Button>
+      <Button variant="contained">버튼</Button>
+
+      <div className="w-[100px] h-[100px] bg-red-500"></div>
     </>
   );
 }
