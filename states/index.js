@@ -55,3 +55,12 @@ export const todosLastIdAtom = atom({
   default: 0,
   effects_UNSTABLE: [persistAtomTodosEffect],
 });
+
+export const Common__notiSnackBarAtom = atom({
+  key: "app/Common__notiSnackBarAtom",
+  default: {
+    open: false,
+    msg: "",
+    severity: "",
+  },
+});

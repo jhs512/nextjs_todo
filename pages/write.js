@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil";
 import { useTodosState } from "../hooks";
 import Link from "../src/Link";
 import {
+  Common__notiSnackBarAtom,
   TodoWrite__bodyInputValueAtom,
   TodoWrite__performDateInputValueAtom,
 } from "../states";
@@ -14,6 +15,10 @@ import { useRouter } from "next/router";
 
 export default function Home() {
   const router = useRouter();
+
+  const [notiSnackBar, setNotiSnackBar] = useRecoilState(
+    Common__notiSnackBarAtom
+  );
 
   const { writeTodo } = useTodosState();
 
@@ -40,6 +45,12 @@ export default function Home() {
 
     setPerformDateInputValue(null);
     setBodyInputValue("");
+
+    setNotiSnackBar({
+      open: true,
+      msg: "할일이 작성되었습니다.",
+      severity: "success",
+    });
 
     router.replace("/");
   };

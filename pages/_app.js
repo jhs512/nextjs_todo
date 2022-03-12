@@ -1,15 +1,16 @@
 import { CacheProvider } from "@emotion/react";
 import DateAdapter from "@mui/lab/AdapterMoment";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { Alert, Snackbar } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import * as React from "react";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilState } from "recoil";
 import createEmotionCache from "../src/createEmotionCache";
 import theme from "../src/theme";
-import { useSsrComplectedState } from "../states";
+import { Common__notiSnackBarAtom, useSsrComplectedState } from "../states";
 import "../styles/globals.css";
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -75,5 +76,22 @@ function MyAppInner({ children }) {
   const setSsrCompleted = useSsrComplectedState();
   React.useEffect(setSsrCompleted, []);
 
-  return children;
+  const [notiSnackBar, setNotiSnackBar] = useRecoilState(
+    Common__notiSnackBarAtom
+  );
+
+  return (
+    <>
+      <Snackbar
+        open={notiSnackBar.open}
+        autoHideDuration={6000}
+        onClose={() => setNotiSnackBar({ ...notiSnackBar, open: false })}
+      >
+        <Alert severity={notiSnackBar.severity} sx={{ width: "100%" }}>
+          {notiSnackBar.msg}
+        </Alert>
+      </Snackbar>
+      {children}
+    </>
+  );
 }
