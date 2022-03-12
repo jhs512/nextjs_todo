@@ -93,7 +93,7 @@ a {
 }
 /* 노말라이즈 끝 */
 
-/* 폰트 적용 */
+/* 폰트 적용 시작 */
 html > body,
 html > body select,
 html > body button,
@@ -103,4 +103,17 @@ html > body textarea {
   text-underline-position: under;
   line-height: 1.3;
 }
-/* 폰트 적용 */
+/* 폰트 적용 끝 */
+
+/* 앱 레이아웃 시작 */
+html,
+html > body,
+#__next {
+  height: 100%;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+}
+/* 앱 레이아웃 끝 */
