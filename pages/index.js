@@ -60,7 +60,7 @@ function TodoList() {
                   </span>
                 </Button>
                 <div className="flex-shrink-0 w-[2px] my-5 mr-5 bg-[#dcdcdc]"></div>
-                <div className="text-[15px] text-[#565656] py-5 flex-grow leading-relaxed">
+                <div className="text-[15px] text-[#565656] py-5 flex-grow leading-relaxed flex items-center whitespace-pre-line">
                   {todo.body}
                 </div>
                 <Button
