@@ -17,6 +17,8 @@
     "@mui/icons-material": "latest",
     "@mui/lab": "^5.0.0-alpha.72",
     "@mui/material": "latest",
+    "classnames": "^2.3.1",
+    "immer": "^9.0.12",
     "intercept-stdout": "^0.1.2",
     "moment": "^2.29.1",
     "next": "latest",

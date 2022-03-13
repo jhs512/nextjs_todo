@@ -1,4 +1,5 @@
 import { AppBar, Button, Chip, Toolbar } from "@mui/material";
+import classNames from "classnames";
 import Head from "next/head";
 import { useTodosState } from "../hooks";
 import Link from "../src/Link";
@@ -35,7 +36,7 @@ export default function Home() {
 }
 
 function TodoList() {
-  const { todos } = useTodosState();
+  const { todos, toggleCompleted } = useTodosState();
 
   return (
     <div className="bg-[#f4f4f4] flex-1">
@@ -54,8 +55,15 @@ function TodoList() {
                 <Button
                   color="inherit"
                   className="flex-shrink-0 rounded-[20px_0_0_20px] items-start"
+                  onClick={() => toggleCompleted(todo.id)}
                 >
-                  <span className="min-h-[80px] flex items-center text-4xl text-[#dcdcdc] ">
+                  <span
+                    className={classNames(
+                      "min-h-[80px] flex items-center text-4xl",
+                      { "text-[#ff8686]": todo.completed },
+                      { "text-[#dcdcdc]": !todo.completed }
+                    )}
+                  >
                     <i className="fa-solid fa-check"></i>
                   </span>
                 </Button>
