@@ -1,11 +1,11 @@
 import { AppBar, Button, Chip, Toolbar } from "@mui/material";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import Divider from "@mui/material/Divider";
-
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import classNames from "classnames";
 import Head from "next/head";
+import { useState } from "react";
 import { useTodosState } from "../hooks";
 import Link from "../src/Link";
 
@@ -43,11 +43,19 @@ export default function Home() {
 function TodoList() {
   const { todos, toggleCompleted } = useTodosState();
 
+  const [bottomDrawerTodoId, setBottomDrawerTodoId] = useState(null);
+
   return (
     <>
-      <SwipeableDrawer anchor="bottom" open={true}>
+      <SwipeableDrawer
+        anchor="bottom"
+        open={bottomDrawerTodoId !== null}
+        onClose={() => setBottomDrawerTodoId(null)}
+      >
         <List>
-          <ListItem className="items-baseline p-5">1번 할일에 대해서</ListItem>
+          <ListItem className="items-baseline p-5">
+            {bottomDrawerTodoId}번 할일에 대해서
+          </ListItem>
 
           <Divider />
 
@@ -68,12 +76,20 @@ function TodoList() {
           {todos.map((todo) => (
             <li key={todo.id} className="mx-5 py-4">
               <div>
-                <Chip
-                  color="primary"
-                  label={`기한 : ${todo.performDate}`}
-                  className="pt-1 rounded-[12px] text-[12px] border-[1.5px]"
-                  variant="outlined"
-                />
+                <div className="flex gap-3">
+                  <Chip
+                    color="primary"
+                    label={`번호 : ${todo.id}`}
+                    className="pt-1 rounded-[12px] text-[12px] border-[1.5px]"
+                    variant="outlined"
+                  />
+                  <Chip
+                    color="primary"
+                    label={`기한 : ${todo.performDate}`}
+                    className="pt-1 rounded-[12px] text-[12px] border-[1.5px]"
+                    variant="outlined"
+                  />
+                </div>
 
                 <div className="flex bg-white rounded-[20px] shadow mt-3">
                   <Button
@@ -96,6 +112,7 @@ function TodoList() {
                     {todo.body}
                   </div>
                   <Button
+                    onClick={() => setBottomDrawerTodoId(todo.id)}
                     color="inherit"
                     className="flex-shrink-0 rounded-[0_20px_20px_0] items-start"
                   >
