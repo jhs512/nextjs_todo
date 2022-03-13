@@ -87,7 +87,12 @@ function MyAppInner({ children }) {
         autoHideDuration={6000}
         onClose={() => setNotiSnackBar({ ...notiSnackBar, open: false })}
       >
-        <Alert severity={notiSnackBar.severity} sx={{ width: "100%" }}>
+        <Alert
+          color="primary"
+          variant="filled"
+          severity={notiSnackBar.severity}
+          sx={{ width: "100%" }}
+        >
           {notiSnackBar.msg}
         </Alert>
       </Snackbar>
