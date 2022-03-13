@@ -1,4 +1,9 @@
 import { AppBar, Button, Chip, Toolbar } from "@mui/material";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+
 import classNames from "classnames";
 import Head from "next/head";
 import { useTodosState } from "../hooks";
@@ -39,52 +44,72 @@ function TodoList() {
   const { todos, toggleCompleted } = useTodosState();
 
   return (
-    <div className="bg-[#f4f4f4] flex-1">
-      <ul>
-        {todos.map((todo) => (
-          <li key={todo.id} className="mx-5 py-4">
-            <div>
-              <Chip
-                color="primary"
-                label={`기한 : ${todo.performDate}`}
-                className="pt-1 rounded-[12px] text-[12px] border-[1.5px]"
-                variant="outlined"
-              />
+    <>
+      <SwipeableDrawer anchor="bottom" open={true}>
+        <List>
+          <ListItem className="items-baseline p-5">1번 할일에 대해서</ListItem>
 
-              <div className="flex bg-white rounded-[20px] shadow mt-3">
-                <Button
-                  color="inherit"
-                  className="flex-shrink-0 rounded-[20px_0_0_20px] items-start"
-                  onClick={() => toggleCompleted(todo.id)}
-                >
-                  <span
-                    className={classNames(
-                      "min-h-[80px] flex items-center text-4xl",
-                      { "text-[#ff8686]": todo.completed },
-                      { "text-[#dcdcdc]": !todo.completed }
-                    )}
+          <Divider />
+
+          <ListItem button className="items-baseline p-5">
+            <i class="fa-solid fa-pen-to-square"></i>
+            <span>&nbsp;</span>
+            <span>수정</span>
+          </ListItem>
+          <ListItem button className="items-baseline p-5">
+            <i class="fa-solid fa-trash-can"></i>
+            <span>&nbsp;</span>
+            <span>삭제 </span>
+          </ListItem>
+        </List>
+      </SwipeableDrawer>
+      <div className="bg-[#f4f4f4] flex-1">
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo.id} className="mx-5 py-4">
+              <div>
+                <Chip
+                  color="primary"
+                  label={`기한 : ${todo.performDate}`}
+                  className="pt-1 rounded-[12px] text-[12px] border-[1.5px]"
+                  variant="outlined"
+                />
+
+                <div className="flex bg-white rounded-[20px] shadow mt-3">
+                  <Button
+                    color="inherit"
+                    className="flex-shrink-0 rounded-[20px_0_0_20px] items-start"
+                    onClick={() => toggleCompleted(todo.id)}
                   >
-                    <i className="fa-solid fa-check"></i>
-                  </span>
-                </Button>
-                <div className="flex-shrink-0 w-[2px] my-5 mr-5 bg-[#dcdcdc]"></div>
-                <div className="text-[15px] text-[#565656] py-5 flex-grow leading-relaxed flex items-center whitespace-pre-line">
-                  {todo.body}
+                    <span
+                      className={classNames(
+                        "min-h-[80px] flex items-center text-4xl",
+                        { "text-[#ff8686]": todo.completed },
+                        { "text-[#dcdcdc]": !todo.completed }
+                      )}
+                    >
+                      <i className="fa-solid fa-check"></i>
+                    </span>
+                  </Button>
+                  <div className="flex-shrink-0 w-[2px] my-5 mr-5 bg-[#dcdcdc]"></div>
+                  <div className="text-[15px] text-[#565656] py-5 flex-grow leading-relaxed flex items-center whitespace-pre-line">
+                    {todo.body}
+                  </div>
+                  <Button
+                    color="inherit"
+                    className="flex-shrink-0 rounded-[0_20px_20px_0] items-start"
+                  >
+                    <span className="min-h-[80px] flex items-center text-2xl text-[#dcdcdc]">
+                      <i className="fa-solid fa-ellipsis-vertical"></i>
+                    </span>
+                  </Button>
                 </div>
-                <Button
-                  color="inherit"
-                  className="flex-shrink-0 rounded-[0_20px_20px_0] items-start"
-                >
-                  <span className="min-h-[80px] flex items-center text-2xl text-[#dcdcdc]">
-                    <i className="fa-solid fa-ellipsis-vertical"></i>
-                  </span>
-                </Button>
               </div>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
 
