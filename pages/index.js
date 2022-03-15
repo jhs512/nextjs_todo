@@ -234,14 +234,16 @@ function TodoList() {
           onChange={(event, newValue) => {
             setSortIndex(newValue);
           }}
+          TabIndicatorProps={{
+            className: "hidden",
+          }}
         >
           <Tab
             className="flex-grow max-w-[none] px-4"
             label={
               <span className="flex items-baseline">
-                <i className="fa-regular fa-clock mr-2"></i>
+                <i className="fa-regular fa-face-sad-cry mr-2"></i>
                 <span className="mr-2 whitespace-nowrap">급해요</span>
-                <i className="fa-solid fa-sort-up relative top-[3px]"></i>
               </span>
             }
             value={0}
@@ -250,9 +252,8 @@ function TodoList() {
             className="flex-grow max-w-[none] px-4"
             label={
               <span className="flex items-baseline">
-                <i className="fa-regular fa-clock mr-2"></i>
-                <span className="mr-2 whitespace-nowrap">널럴해요</span>
-                <i className="fa-solid fa-sort-down relative top-[-3px]"></i>
+                <i className="fa-regular fa-face-smile-wink mr-2"></i>
+                <span className="mr-2 whitespace-nowrap">널널해요</span>
               </span>
             }
             value={1}
@@ -263,7 +264,6 @@ function TodoList() {
               <span className="flex items-baseline">
                 <i className="fa-solid fa-pen mr-2"></i>
                 <span className="mr-2 whitespace-nowrap">작성순</span>
-                <i className="fa-solid fa-sort-up relative top-[3px]"></i>
               </span>
             }
             value={2}
@@ -272,9 +272,8 @@ function TodoList() {
             className="flex-grow max-w-[none] px-4"
             label={
               <span className="flex items-baseline">
-                <i className="fa-solid fa-pen mr-2"></i>
-                <span className="mr-2 whitespace-nowrap">작성순</span>
-                <i className="fa-solid fa-sort-down relative top-[-3px]"></i>
+                <i className="fa-regular fa-clock mr-2"></i>
+                <span className="mr-2 whitespace-nowrap">최신순</span>
               </span>
             }
             value={3}
@@ -286,7 +285,6 @@ function TodoList() {
               <div>
                 <div className="flex gap-3">
                   <Chip
-                    color="primary"
                     label={`번호 : ${todo.id}`}
                     className="pt-1 rounded-[12px] text-[12px] border-[1.5px]"
                     variant="outlined"

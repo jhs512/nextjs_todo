@@ -66,7 +66,7 @@ export default function Edit() {
           <div className="flex-1"></div>
           <div className="flex self-stretch ">
             <Button color="inherit" href="/" noLinkStyle component={Link}>
-              다음에 할게요.
+              다음에 할래요.
             </Button>
           </div>
         </Toolbar>
