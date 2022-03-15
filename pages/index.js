@@ -71,13 +71,17 @@ function TodoList() {
 
   let sortedTodos = filteredTodos;
 
-  if (sortIndex == 0) {
+  if (sortIndex == 1) {
     sortedTodos = [...sortedTodos].sort((a, b) => {
       return a.id > b.id ? -1 : 1;
     });
-  } else if (sortIndex == 1) {
+  } else if (sortIndex == 2) {
     sortedTodos = [...sortedTodos].sort((a, b) => {
       return a.performDate > b.performDate ? -1 : 1;
+    });
+  } else if (sortIndex == 3) {
+    sortedTodos = [...sortedTodos].sort((a, b) => {
+      return a.performDate < b.performDate ? -1 : 1;
     });
   }
 
@@ -134,18 +138,85 @@ function TodoList() {
           onChange={(event, newValue) => setFilterCompletedIndex(newValue)}
           aria-label="basic tabs example"
         >
-          <Tab label="전체" value={0} />
-          <Tab label="완료" value={1} />
-          <Tab label="미완료" value={2} />
+          <Tab
+            label={
+              <span className="flex items-baseline">
+                <i className="fa-solid fa-list-ul"></i>
+                <span className="ml-2">전체</span>
+              </span>
+            }
+            value={0}
+          />
+          <Tab
+            label={
+              <span className="flex items-baseline">
+                <i className="fa-regular fa-square-check"></i>
+                <span className="ml-2">완료</span>
+              </span>
+            }
+            value={1}
+          />
+          <Tab
+            label={
+              <span className="flex items-baseline">
+                <i className="fa-regular fa-square"></i>
+                <span className="ml-2">미완료</span>
+              </span>
+            }
+            value={2}
+          />
         </Tabs>
         <Tabs
-          variant="fullWidth"
+          variant="scrollable"
           value={sortIndex}
-          onChange={(event, newValue) => setSortIndex(newValue)}
-          aria-label="basic tabs example"
+          onChange={(event, newValue) => {
+            setSortIndex(newValue);
+          }}
         >
-          <Tab label="최신순 ▲" value={0} />
-          <Tab label="기한순 ▲" value={1} />
+          <Tab
+            className="flex-grow max-w-[none] px-4"
+            label={
+              <span className="flex items-baseline">
+                <i className="fa-solid fa-pen mr-2"></i>
+                <span className="mr-2 whitespace-nowrap">작성순</span>
+                <i className="fa-solid fa-sort-up relative top-[3px]"></i>
+              </span>
+            }
+            value={0}
+          />
+          <Tab
+            className="flex-grow max-w-[none] px-4"
+            label={
+              <span className="flex items-baseline">
+                <i className="fa-solid fa-pen mr-2"></i>
+                <span className="mr-2 whitespace-nowrap">작성순</span>
+                <i className="fa-solid fa-sort-down relative top-[-3px]"></i>
+              </span>
+            }
+            value={1}
+          />
+          <Tab
+            className="flex-grow max-w-[none] px-4"
+            label={
+              <span className="flex items-baseline">
+                <i className="fa-regular fa-clock mr-2"></i>
+                <span className="mr-2 whitespace-nowrap">기한순</span>
+                <i className="fa-solid fa-sort-up relative top-[3px]"></i>
+              </span>
+            }
+            value={2}
+          />
+          <Tab
+            className="flex-grow max-w-[none] px-4"
+            label={
+              <span className="flex items-baseline">
+                <i className="fa-regular fa-clock mr-2"></i>
+                <span className="mr-2 whitespace-nowrap">기한순</span>
+                <i className="fa-solid fa-sort-down relative top-[-3px]"></i>
+              </span>
+            }
+            value={3}
+          />
         </Tabs>
         <ul>
           {sortedTodos.map((todo) => (
