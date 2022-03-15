@@ -121,12 +121,6 @@ function TodoList() {
 
   let filteredTodos = todos;
 
-  if (filterCompletedIndex == 1) {
-    filteredTodos = todos.filter((todo) => !todo.completed);
-  } else if (filterCompletedIndex == 2) {
-    filteredTodos = todos.filter((todo) => todo.completed);
-  }
-
   let sortedTodos = filteredTodos;
 
   if (sortIndex == 0) {
@@ -281,7 +275,17 @@ function TodoList() {
         </Tabs>
         <ul>
           {sortedTodos.map((todo) => (
-            <li key={todo.id} className="mx-5 py-4">
+            <li
+              key={todo.id}
+              className={classNames(
+                "mx-5 py-4 transition-all duration-[.7s] opacity-1",
+                {
+                  "opacity-0 invisible absolute":
+                    (todo.completed && filterCompletedIndex == 1) ||
+                    (!todo.completed && filterCompletedIndex == 2),
+                }
+              )}
+            >
               <div>
                 <div className="flex gap-3">
                   <Chip
