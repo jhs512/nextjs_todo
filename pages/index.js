@@ -1,4 +1,4 @@
-import { AppBar, Button, Chip, Toolbar } from "@mui/material";
+import { AppBar, Button, Chip, Tab, Tabs, Toolbar } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -9,7 +9,10 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { useTodosState } from "../hooks";
 import Link from "../src/Link";
-import { Common__notiSnackBarAtom } from "../states";
+import {
+  Common__notiSnackBarAtom,
+  TodoList__filterCompletedIndexAtom,
+} from "../states";
 
 export default function Home() {
   const { todos } = useTodosState();
@@ -50,6 +53,20 @@ function TodoList() {
   const [notiSnackBar, setNotiSnackBar] = useRecoilState(
     Common__notiSnackBarAtom
   );
+
+  const [filterCompletedIndex, setFilterCompletedIndex] = useRecoilState(
+    TodoList__filterCompletedIndexAtom
+  );
+
+  let sortedTodos = todos;
+
+  if (filterCompletedIndex == 1) {
+    sortedTodos = sortedTodos.filter((todo) => todo.completed);
+  }
+
+  if (filterCompletedIndex == 2) {
+    sortedTodos = sortedTodos.filter((todo) => !todo.completed);
+  }
 
   return (
     <>
@@ -98,8 +115,19 @@ function TodoList() {
         </List>
       </SwipeableDrawer>
       <div className="bg-[#f4f4f4] flex-1">
+        <Tabs
+          variant="fullWidth"
+          value={filterCompletedIndex}
+          onChange={(event, newValue) => setFilterCompletedIndex(newValue)}
+          aria-label="basic tabs example"
+        >
+          <Tab label="전체" value={0} />
+          <Tab label="완료" value={1} />
+          <Tab label="미완료" value={2} />
+        </Tabs>
+
         <ul>
-          {todos.map((todo) => (
+          {sortedTodos.map((todo) => (
             <li key={todo.id} className="mx-5 py-4">
               <div>
                 <div className="flex gap-3">
