@@ -6,8 +6,10 @@ import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import classNames from "classnames";
 import Head from "next/head";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 import { useTodosState } from "../hooks";
 import Link from "../src/Link";
+import { Common__notiSnackBarAtom } from "../states";
 
 export default function Home() {
   const { todos } = useTodosState();
@@ -41,15 +43,20 @@ export default function Home() {
 }
 
 function TodoList() {
-  const { todos, toggleCompleted } = useTodosState();
+  const { todos, toggleCompleted, removeTodo } = useTodosState();
 
   const [bottomDrawerTodoId, setBottomDrawerTodoId] = useState(null);
+
+  const [notiSnackBar, setNotiSnackBar] = useRecoilState(
+    Common__notiSnackBarAtom
+  );
 
   return (
     <>
       <SwipeableDrawer
         anchor="bottom"
         open={bottomDrawerTodoId !== null}
+        onOpen={() => {}}
         onClose={() => setBottomDrawerTodoId(null)}
       >
         <List>
@@ -59,13 +66,32 @@ function TodoList() {
 
           <Divider />
 
-          <ListItem button className="items-baseline p-5">
-            <i class="fa-solid fa-pen-to-square"></i>
+          <ListItem
+            button
+            component={Link}
+            noLinkStyle
+            href={`edit?id=${bottomDrawerTodoId}`}
+            className="items-baseline p-5"
+          >
+            <i className="fa-solid fa-pen-to-square"></i>
             <span>&nbsp;</span>
             <span>수정</span>
           </ListItem>
-          <ListItem button className="items-baseline p-5">
-            <i class="fa-solid fa-trash-can"></i>
+          <ListItem
+            button
+            className="items-baseline p-5"
+            onClick={() => {
+              confirm("정말로 삭제하시겠습니까?") &&
+                removeTodo(bottomDrawerTodoId);
+              setBottomDrawerTodoId(null);
+              setNotiSnackBar({
+                open: true,
+                msg: `${bottomDrawerTodoId}번 할일이 삭제되었습니다.`,
+                severity: "success",
+              });
+            }}
+          >
+            <i className="fa-solid fa-trash-can"></i>
             <span>&nbsp;</span>
             <span>삭제 </span>
           </ListItem>

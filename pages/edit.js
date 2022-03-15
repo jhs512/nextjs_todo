@@ -1,33 +1,32 @@
 import { MobileDatePicker } from "@mui/lab";
 import { AppBar, Button, TextField, Toolbar } from "@mui/material";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { useTodosState } from "../hooks";
 import Link from "../src/Link";
-import {
-  Common__notiSnackBarAtom,
-  TodoWrite__bodyInputValueAtom,
-  TodoWrite__performDateInputValueAtom,
-} from "../states";
+import { Common__notiSnackBarAtom } from "../states";
 import { momentToFormat2 } from "../utils";
 
-export default function Write() {
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+
+export default function Edit() {
   const router = useRouter();
+
+  const { id } = router.query;
 
   const [notiSnackBar, setNotiSnackBar] = useRecoilState(
     Common__notiSnackBarAtom
   );
 
-  const { writeTodo } = useTodosState();
+  const { modifyTodo, findTodoById } = useTodosState();
 
-  const [performDateInputValue, setPerformDateInputValue] = useRecoilState(
-    TodoWrite__performDateInputValueAtom
-  );
+  const todo = findTodoById(id);
 
-  const [bodyInputValue, setBodyInputValue] = useRecoilState(
-    TodoWrite__bodyInputValueAtom
+  const [performDateInputValue, setPerformDateInputValue] = useState(
+    todo.performDate
   );
+  const [bodyInputValue, setBodyInputValue] = useState(todo.body);
 
   const onSubmit = () => {
     if (!performDateInputValue || performDateInputValue.trim().length == 0) {
@@ -40,14 +39,11 @@ export default function Write() {
       return;
     }
 
-    writeTodo(performDateInputValue.trim(), bodyInputValue.trim());
-
-    setPerformDateInputValue(null);
-    setBodyInputValue("");
+    modifyTodo(todo.id, performDateInputValue.trim(), bodyInputValue.trim());
 
     setNotiSnackBar({
       open: true,
-      msg: "할일이 작성되었습니다.",
+      msg: `${todo.id}번 할일이 수정되었습니다.`,
       severity: "success",
     });
 
@@ -57,7 +53,7 @@ export default function Write() {
   return (
     <>
       <Head>
-        <title>할일 작성 | TODO</title>
+        <title>할일 수정 | TODO</title>
         <meta name="description" content="할일관리" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -98,7 +94,7 @@ export default function Write() {
           onChange={({ target: { value } }) => setBodyInputValue(value)}
         />
         <Button variant="contained" onClick={onSubmit}>
-          <span>할일추가</span>
+          <span>{todo.id}번 할일수정</span>
           <span>&nbsp;</span>
           <i className="fa-solid fa-marker"></i>
         </Button>

@@ -5,12 +5,13 @@ import { Alert, Snackbar } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import * as React from "react";
 import { RecoilRoot, useRecoilState } from "recoil";
 import createEmotionCache from "../src/createEmotionCache";
 import theme from "../src/theme";
-import { Common__notiSnackBarAtom, useSsrComplectedState } from "../states";
+import { Common__notiSnackBarAtom } from "../states";
 import "../styles/globals.css";
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -73,12 +74,23 @@ MyApp.propTypes = {
 };
 
 function MyAppInner({ children }) {
-  const setSsrCompleted = useSsrComplectedState();
-  React.useEffect(setSsrCompleted, []);
+  const router = useRouter();
 
   const [notiSnackBar, setNotiSnackBar] = useRecoilState(
     Common__notiSnackBarAtom
   );
+
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    if (router.isReady) {
+      setLoading(false);
+    }
+  }, [router.isReady]);
+
+  if (loading) {
+    return <>로딩중...</>;
+  }
 
   return (
     <>
