@@ -12,6 +12,7 @@ import Link from "../src/Link";
 import {
   Common__notiSnackBarAtom,
   TodoList__filterCompletedIndexAtom,
+  TodoList__sortIndexAtom,
 } from "../states";
 
 export default function Home() {
@@ -58,14 +59,26 @@ function TodoList() {
     TodoList__filterCompletedIndexAtom
   );
 
-  let sortedTodos = todos;
+  const [sortIndex, setSortIndex] = useRecoilState(TodoList__sortIndexAtom);
+
+  let filteredTodos = todos;
 
   if (filterCompletedIndex == 1) {
-    sortedTodos = sortedTodos.filter((todo) => todo.completed);
+    filteredTodos = todos.filter((todo) => todo.completed);
+  } else if (filterCompletedIndex == 2) {
+    filteredTodos = todos.filter((todo) => !todo.completed);
   }
 
-  if (filterCompletedIndex == 2) {
-    sortedTodos = sortedTodos.filter((todo) => !todo.completed);
+  let sortedTodos = filteredTodos;
+
+  if (sortIndex == 0) {
+    sortedTodos = [...sortedTodos].sort((a, b) => {
+      return a.id > b.id ? -1 : 1;
+    });
+  } else if (sortIndex == 1) {
+    sortedTodos = [...sortedTodos].sort((a, b) => {
+      return a.performDate > b.performDate ? -1 : 1;
+    });
   }
 
   return (
@@ -125,7 +138,15 @@ function TodoList() {
           <Tab label="완료" value={1} />
           <Tab label="미완료" value={2} />
         </Tabs>
-
+        <Tabs
+          variant="fullWidth"
+          value={sortIndex}
+          onChange={(event, newValue) => setSortIndex(newValue)}
+          aria-label="basic tabs example"
+        >
+          <Tab label="최신순 ▲" value={0} />
+          <Tab label="기한순 ▲" value={1} />
+        </Tabs>
         <ul>
           {sortedTodos.map((todo) => (
             <li key={todo.id} className="mx-5 py-4">

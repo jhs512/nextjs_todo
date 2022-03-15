@@ -30,6 +30,12 @@ export const TodoList__filterCompletedIndexAtom = atom({
   effects_UNSTABLE: [persistAtomCommonEffect],
 });
 
+export const TodoList__sortIndexAtom = atom({
+  key: "app/TodoList__sortIndexAtom",
+  default: 0,
+  effects_UNSTABLE: [persistAtomCommonEffect],
+});
+
 export const todosAtom = atom({
   key: "app/todosAtom",
   default: [],
