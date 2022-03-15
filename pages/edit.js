@@ -60,11 +60,15 @@ export default function Edit() {
 
       <AppBar position="fixed">
         <Toolbar>
-          <div className="flex-1"></div>
           <Link href="/" noLinkStyle className="font-bold">
             HAPPY NOTE
           </Link>
-          <div className="flex-1 flex justify-end"></div>
+          <div className="flex-1"></div>
+          <div className="flex self-stretch ">
+            <Button color="inherit" href="/" noLinkStyle component={Link}>
+              다음에 할게요.
+            </Button>
+          </div>
         </Toolbar>
       </AppBar>
       <Toolbar />

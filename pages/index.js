@@ -1,10 +1,22 @@
-import { AppBar, Button, Chip, Tab, Tabs, Toolbar } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Button,
+  Chip,
+  Fab,
+  Tab,
+  Tabs,
+  Toolbar,
+  useScrollTrigger,
+  Zoom,
+} from "@mui/material";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import classNames from "classnames";
 import Head from "next/head";
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { useTodosState } from "../hooks";
@@ -14,6 +26,52 @@ import {
   TodoList__filterCompletedIndexAtom,
   TodoList__sortIndexAtom,
 } from "../states";
+
+function ScrollTop(props) {
+  const { children, window } = props;
+  // Note that you normally won't need to set the window ref as useScrollTrigger
+  // will default to window.
+  // This is only being set here because the demo is in an iframe.
+  const trigger = useScrollTrigger({
+    target: window ? window() : undefined,
+    disableHysteresis: true,
+    threshold: 100,
+  });
+
+  const handleClick = (event) => {
+    const anchor = (event.target.ownerDocument || document).querySelector(
+      "#back-to-top-anchor"
+    );
+
+    if (anchor) {
+      anchor.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
+
+  return (
+    <Zoom in={trigger}>
+      <Box
+        onClick={handleClick}
+        role="presentation"
+        sx={{ position: "fixed", bottom: 16, right: 16 }}
+      >
+        {children}
+      </Box>
+    </Zoom>
+  );
+}
+
+ScrollTop.propTypes = {
+  children: PropTypes.element.isRequired,
+  /**
+   * Injected by the documentation to work in an iframe.
+   * You won't need it on your project.
+   */
+  window: PropTypes.func,
+};
 
 export default function Home() {
   const { todos } = useTodosState();
@@ -39,7 +97,7 @@ export default function Home() {
           </div>
         </Toolbar>
       </AppBar>
-      <Toolbar />
+      <Toolbar id="back-to-top-anchor" />
       {todos.length == 0 && <TodosEmpty />}
       {todos.length > 0 && <TodoList />}
     </>
@@ -64,24 +122,24 @@ function TodoList() {
   let filteredTodos = todos;
 
   if (filterCompletedIndex == 1) {
-    filteredTodos = todos.filter((todo) => todo.completed);
-  } else if (filterCompletedIndex == 2) {
     filteredTodos = todos.filter((todo) => !todo.completed);
+  } else if (filterCompletedIndex == 2) {
+    filteredTodos = todos.filter((todo) => todo.completed);
   }
 
   let sortedTodos = filteredTodos;
 
-  if (sortIndex == 1) {
+  if (sortIndex == 0) {
     sortedTodos = [...sortedTodos].sort((a, b) => {
-      return a.id > b.id ? -1 : 1;
+      return a.performDate < b.performDate ? -1 : 1;
     });
-  } else if (sortIndex == 2) {
+  } else if (sortIndex == 1) {
     sortedTodos = [...sortedTodos].sort((a, b) => {
       return a.performDate > b.performDate ? -1 : 1;
     });
   } else if (sortIndex == 3) {
     sortedTodos = [...sortedTodos].sort((a, b) => {
-      return a.performDate < b.performDate ? -1 : 1;
+      return a.id > b.id ? -1 : 1;
     });
   }
 
@@ -95,7 +153,11 @@ function TodoList() {
       >
         <List>
           <ListItem className="items-baseline p-5">
-            {bottomDrawerTodoId}번 할일에 대해서
+            <span className="text-[color:var(--mui-color-primary-main)]">
+              {bottomDrawerTodoId}번
+            </span>
+            <span>&nbsp;</span>
+            <span>할일에 대해서</span>
           </ListItem>
 
           <Divider />
@@ -150,8 +212,8 @@ function TodoList() {
           <Tab
             label={
               <span className="flex items-baseline">
-                <i className="fa-regular fa-square-check"></i>
-                <span className="ml-2">완료</span>
+                <i className="fa-regular fa-square"></i>
+                <span className="ml-2">미완료</span>
               </span>
             }
             value={1}
@@ -159,8 +221,8 @@ function TodoList() {
           <Tab
             label={
               <span className="flex items-baseline">
-                <i className="fa-regular fa-square"></i>
-                <span className="ml-2">미완료</span>
+                <i className="fa-regular fa-square-check"></i>
+                <span className="ml-2">완료</span>
               </span>
             }
             value={2}
@@ -177,8 +239,8 @@ function TodoList() {
             className="flex-grow max-w-[none] px-4"
             label={
               <span className="flex items-baseline">
-                <i className="fa-solid fa-pen mr-2"></i>
-                <span className="mr-2 whitespace-nowrap">작성순</span>
+                <i className="fa-regular fa-clock mr-2"></i>
+                <span className="mr-2 whitespace-nowrap">급해요</span>
                 <i className="fa-solid fa-sort-up relative top-[3px]"></i>
               </span>
             }
@@ -188,8 +250,8 @@ function TodoList() {
             className="flex-grow max-w-[none] px-4"
             label={
               <span className="flex items-baseline">
-                <i className="fa-solid fa-pen mr-2"></i>
-                <span className="mr-2 whitespace-nowrap">작성순</span>
+                <i className="fa-regular fa-clock mr-2"></i>
+                <span className="mr-2 whitespace-nowrap">널럴해요</span>
                 <i className="fa-solid fa-sort-down relative top-[-3px]"></i>
               </span>
             }
@@ -199,8 +261,8 @@ function TodoList() {
             className="flex-grow max-w-[none] px-4"
             label={
               <span className="flex items-baseline">
-                <i className="fa-regular fa-clock mr-2"></i>
-                <span className="mr-2 whitespace-nowrap">기한순</span>
+                <i className="fa-solid fa-pen mr-2"></i>
+                <span className="mr-2 whitespace-nowrap">작성순</span>
                 <i className="fa-solid fa-sort-up relative top-[3px]"></i>
               </span>
             }
@@ -210,8 +272,8 @@ function TodoList() {
             className="flex-grow max-w-[none] px-4"
             label={
               <span className="flex items-baseline">
-                <i className="fa-regular fa-clock mr-2"></i>
-                <span className="mr-2 whitespace-nowrap">기한순</span>
+                <i className="fa-solid fa-pen mr-2"></i>
+                <span className="mr-2 whitespace-nowrap">작성순</span>
                 <i className="fa-solid fa-sort-down relative top-[-3px]"></i>
               </span>
             }
@@ -272,6 +334,12 @@ function TodoList() {
           ))}
         </ul>
       </div>
+
+      <ScrollTop>
+        <Fab color="primary" size="small" aria-label="scroll back to top">
+          <i className="fa-solid fa-arrow-up"></i>
+        </Fab>
+      </ScrollTop>
     </>
   );
 }

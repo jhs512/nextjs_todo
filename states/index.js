@@ -26,7 +26,7 @@ export const TodoWrite__bodyInputValueAtom = atom({
 
 export const TodoList__filterCompletedIndexAtom = atom({
   key: "app/TodoList__filterCompletedIndexAtom",
-  default: 0,
+  default: 1,
   effects_UNSTABLE: [persistAtomCommonEffect],
 });
 
